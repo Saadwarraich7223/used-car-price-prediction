@@ -1,49 +1,28 @@
 import pandas as pd
-from src.data.cleaning import (
-    
-    clean_engine,
-    clean_max_power,
-    remove_duplicates,
-    clean_mileage,
-    clean_torque
-)
+from src.data.cleaning import clean_dataset
 
-def test_clean_mileage():
-    series = pd.Series(["23.4 kmpl", "17.3 km/kg", None])
-
-    result = clean_mileage(series)
-
-    assert result.iloc[0] == 23.4
-    assert result.iloc[1] == 17.3
-    assert pd.isna(result.iloc[2])
-
-
-def test_clean_engine():
-    series = pd.Series(["1248 CC", "1498 CC", None])
-
-    result = clean_engine(series)
-
-    assert result.iloc[0] == 1248
-    assert result.iloc[1] == 1498
-    assert pd.isna(result.iloc[2])
-
-
-def test_clean_max_power():
-    series = pd.Series(["74 bhp", "103.52 bhp", None])
-
-    result = clean_max_power(series)
-
-    assert result.iloc[0] == 74
-    assert result.iloc[1] == 103.52
-    assert pd.isna(result.iloc[2])
-
-
-def test_remove_duplicates():
+def test_clean_dataset():
     df = pd.DataFrame({
-        "name": ["A", "A", "B"],
-        "year": [2020, 2020, 2019],
+        "name": ["Car A", "Car A"],
+        "year": [2020, 2020],
+        "selling_price": [500000, 500000],
+        "km_driven": [50000, 50000],
+        "fuel": ["Petrol", "Petrol"],
+        "seller_type": ["Individual", "Individual"],
+        "transmission": ["Manual", "Manual"],
+        "owner": ["First Owner", "First Owner"],
+        "mileage": ["20 kmpl", "20 kmpl"],
+        "engine": ["1200 CC", "1200 CC"],
+        "max_power": ["80 bhp", "80 bhp"],
+        "torque": ["110Nm@ 4000rpm", "110Nm@ 4000rpm"],
+        "seats": [5, 5],
     })
+    
+    result = clean_dataset(df)
 
-    result = remove_duplicates(df)
-
-    assert len(result) == 2
+    assert len(result) == 1
+    assert result["engine_cc"].iloc[0] == 1200
+    assert result["max_power_bhp"].iloc[0] == 80
+    assert result["torque_nm"].iloc[0] == 110
+    
+    

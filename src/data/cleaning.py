@@ -90,3 +90,22 @@ def clean_torque(value):
     )
         
         
+
+
+def clean_dataset(df: pd.DataFrame) -> pd.DataFrame:
+    """Apply all deterministic data-cleaning transformations."""
+    df=remove_duplicates(df)
+    
+    df['mileage']=clean_mileage(df["mileage"])
+    
+    df['engine_cc']=clean_engine(df["engine"])
+    
+    df['max_power_bhp']=clean_max_power(df["max_power"])
+    
+    torque_features = df["torque"].apply(clean_torque)
+    
+    df[
+        ["torque_nm", "torque_rpm_min", "torque_rpm_max"]
+    ] = torque_features
+    
+    return df
