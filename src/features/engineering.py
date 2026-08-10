@@ -17,11 +17,24 @@ def extract_age(series: pd.Series) -> pd.Series:
 
 
 def create_features(df: pd.DataFrame) -> pd.DataFrame:
-    """Create model features from the cleaned dataset."""
+    """Create derived features from the cleaned dataset."""
     df = df.copy()
 
+    reference_year = df["year"].max()
+
+    df["vehicle_age"] = reference_year - df["year"]
+
+    df["km_per_year"] = (
+        df["km_driven"] /
+        df["vehicle_age"].clip(lower=1)
+    )
+
+    df["power_per_cc"] = (
+        df["max_power_bhp"] /
+        df["engine_cc"]
+    )
+
     df["brand"] = extract_brand(df["name"])
-    df['age']=extract_age(df["year"])
 
     df = df.drop(columns=["name"])
 
