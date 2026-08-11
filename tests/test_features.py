@@ -1,4 +1,5 @@
 import pandas as pd
+import pytest
 
 from src.features.engineering import (
     extract_brand,
@@ -35,12 +36,21 @@ def test_extract_age():
     
 def test_create_features():
     df = pd.DataFrame({
-        "name": ["Maruti Swift VDI BSIV"],
-        "year": [2020],
+        "name": ["Maruti Swift VDI BSIV", "Toyota Etios GD"],
+        "year": [2020, 2018],
+        "km_driven": [50000, 100000],
+        "max_power_bhp": [80, 100],
+        "engine_cc": [1200, 1500],
     })
 
     result = create_features(df)
 
     assert "name" not in result.columns
-    assert result["brand"].iloc[0] == "Maruti"
-    assert result["age"].iloc[0] == 6
+    assert result["brand"].tolist() == ["Maruti", "Toyota"]
+    # reference_year is the max year in the data (2020)
+    assert result["vehicle_age"].tolist() == [0, 2]
+    # vehicle_age is clipped to a minimum of 1 when computing km_per_year
+    assert result["km_per_year"].tolist() == [50000, 50000]
+    assert result["power_per_cc"].tolist() == pytest.approx(
+        [80 / 1200, 100 / 1500]
+    )
