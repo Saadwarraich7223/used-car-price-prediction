@@ -1,0 +1,37 @@
+data:
+  raw_path: "data/raw/car details v4.csv"
+  target: "selling_price"
+
+model:
+  name: "random_forest"
+  random_state: 42
+  test_size: 0.2
+  params:
+    n_estimators: 500
+    min_samples_split: 5
+    min_samples_leaf: 1
+    max_features: 1.0
+    max_depth: null
+    n_jobs: -1
+
+pipeline:
+  artifact_path: "models/car_price_pipeline.joblib"
+  numeric_features:
+    - year
+    - km_driven
+    - mileage
+    - seats
+    - engine_cc
+    - max_power_bhp
+    - torque_nm
+    - torque_rpm_min
+    - torque_rpm_max
+    - vehicle_age
+    - km_per_year
+    - power_per_cc
+  categorical_features:
+    - fuel
+    - seller_type
+    - transmission
+    - owner
+    - brand
