@@ -5,3 +5,4 @@ __pycache__/
 .omo/
 data/processed/
 models/
+.omo/
