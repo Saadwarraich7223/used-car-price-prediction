@@ -4,5 +4,4 @@ __pycache__/
 *.pyc
 .omo/
 data/processed/
-models/
-.omo/
+/models/
