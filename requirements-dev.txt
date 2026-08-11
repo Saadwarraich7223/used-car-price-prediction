@@ -1,0 +1,17 @@
+# Development dependencies: tests, notebooks, and linting.
+# Install with: pip install -r requirements-dev.txt
+
+-r requirements.txt
+
+# Testing
+pytest==9.1.1
+
+# Linting
+ruff==0.16.2
+
+# Notebooks
+jupyterlab==4.6.2
+notebook==7.6.1
+nbformat==5.10.4
+ipykernel==7.3.0
+missingno==0.5.2
